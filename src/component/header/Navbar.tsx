@@ -32,7 +32,7 @@ import Link from "next/link";
 
 const NavBar = () => {
   return (
-    <nav className=" sticky top-0 bg-black px-8 py-4 flex justify-between items-center shadow-md md:px-4">
+    <nav className=" sticky top-0 bg-black px-8 py-4 flex justify-between items-center shadow-md md:px-4 z-10">
       <div className="text-white text-2xl font-bold md:text-xl">
         <Link href="/">
           <div className="w-28 h-12 overflow-hidden flex items-center justify-center">
@@ -60,7 +60,7 @@ const NavBar = () => {
           Profile
         </Link>
         <Link
-          href="/favorites"
+          href="/api/favorite"
           className="text-white text-base px-4 py-2 rounded hover:bg-white/10 md:px-2"
         >
           Favorites
