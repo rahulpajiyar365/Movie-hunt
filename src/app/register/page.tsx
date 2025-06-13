@@ -1,6 +1,7 @@
 "use client";
 
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Register() {
@@ -9,6 +10,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const router=useRouter()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,6 +37,7 @@ export default function Register() {
       alert("Registration successful!");
       setError(""); // Clear error if successful
       // Optional: Navigate to login or show success
+      router.push('/login')
     } catch (err: any) {
       console.error("API error:", err);
       setError(

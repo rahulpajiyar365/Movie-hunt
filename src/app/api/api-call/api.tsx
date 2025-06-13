@@ -1,5 +1,6 @@
 "use client";
 import axios from "axios";
+import { useState } from "react";
 
 export const fetchMovies = async () => {
   const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -12,8 +13,6 @@ export const fetchMovies = async () => {
     throw error;
   }
 };
-
-
 
 export const movieDetail = async (id: number) => {
   const movieURL = process.env.NEXT_PUBLIC_API_MOVIE_DETAIL_URL;
@@ -35,6 +34,7 @@ export const movieDetail = async (id: number) => {
     throw error;
   }
 };
+
 export const moviefavorite = async (id: number) => {
   const movieURL = process.env.NEXT_PUBLIC_API_MOVIE_DETAIL_URL;
 
@@ -43,18 +43,33 @@ export const moviefavorite = async (id: number) => {
     const response = await axios.post(
       `http://192.168.1.212:8000/api/favorite/${id}`,
       {
-
         headers: {
           Authorization: `Bearer ${token}`,
-
         },
-        
       }
     );
     console.log("Favorite Movie", response.data.data);
     return response.data.data;
   } catch (error) {
     console.error("Error fetching favorite movies:", error);
+    throw error;
+  }
+};
+
+export const fetchMovieById = async (id: number) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(
+      `http://192.168.1.212:8000/api/movie-detail/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response?.data?.data;
+  } catch (error) {
+    console.error("Error fetching movie detail:", error);
     throw error;
   }
 };

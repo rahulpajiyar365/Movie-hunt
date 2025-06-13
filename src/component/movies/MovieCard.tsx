@@ -5,9 +5,8 @@ import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { fetchMovies } from "@/app/api/api-call/api";
-import { GrFavorite } from "react-icons/gr";
-import Link from "next/link";
 import { FaHeart } from "react-icons/fa6";
+
 
 interface MovieProps {
   id: number;
@@ -28,20 +27,7 @@ const MovieCard = ({
   const [movies, setMovies] = useState<MovieProps[]>([]);
   const router = useRouter();
   const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
-  /*  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        // const response = await axios.get("http://192.168.1.212:8000/api/movies");
-        const response = await axios.get(`${baseURL}/movies`);
-        console.log("Movie Response", response?.data?.data);
-        setMovies(response?.data?.data);
-      } catch (error) {
-        console.error("Error fetching movies:", error);
-      }
-    };
 
-    fetchMovies();
-  }, []); */
 
   useEffect(() => {
     const getMovies = async () => {
@@ -59,8 +45,10 @@ const MovieCard = ({
     //TODO Post
   };
   return (
+   
     <div className="bg-white p-4 rounded-lg shadow">
       <div key={id} className="group cursor-pointer max-w-sm w-full">
+      
         <div className=" relative h-[450px] w-full">
           <Image
             src={thumbnail_url}

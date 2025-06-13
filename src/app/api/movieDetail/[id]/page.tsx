@@ -1,8 +1,11 @@
 "use client";
-import { use, useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
+
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { fetchMovieById } from "../../api-call/api";
+import ReviewBox from "@/component/reviewbox/Reviewbox";
+
 
 interface Genre {
   id: number;
@@ -31,27 +34,15 @@ export default function Page() {
   const params = useParams(); // 🆕 un wrap it using React.use()
   const id = Number(params.id);
   const [movie, setMovie] = useState<Movie | null>(null);
+  const [movieRating, setMovieRating] = useState(0);
 
-  const fetchMovieById = async (id: number) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(
-        `http://192.168.1.212:8000/api/movie-detail/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setMovie(response?.data?.data);
-    } catch (error) {
-      console.error("Error fetching movie detail:", error);
-    }
-  };
+
 
   useEffect(() => {
     if (id) {
-      fetchMovieById(id);
+      fetchMovieById(id)
+        .then((data) => setMovie(data))
+        .catch((error) => console.error("Error fetching movie detail:", error));
     }
   }, [id]);
 
@@ -93,6 +84,7 @@ export default function Page() {
                 <p>
                   <span className="font-semibold">Rating:</span> {movie.rating}
                 </p>
+         
                 <p>
                   <span className="font-semibold">Language:</span>{" "}
                   {movie.language}
@@ -114,6 +106,9 @@ export default function Page() {
                   ))}
                 </div>
               </div>
+            <div>
+              <ReviewBox />
+            </div>
             </div>
           </div>
         </div>

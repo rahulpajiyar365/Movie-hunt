@@ -3,7 +3,7 @@ import { Movie } from "../movies/Movie";
 
 const Hero = ({ movie }: { movie: Movie }) => (
   <section className="relative w-full h-full mb-8">
-    {/* Backdrop */}
+   
     <Image
       src={movie.thumbnail_url}
       alt={movie.title}
@@ -11,10 +11,10 @@ const Hero = ({ movie }: { movie: Movie }) => (
       priority
       className="object-cover object-center"
     />
-    {/* Overlay */}
+=
     <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/70 to-transparent" />
 
-    {/* Content */}
+ 
     <div className="relative z-10 max-w-4xl pl-6 sm:pl-12 pt-20 space-y-4">
       <h1 className="text-4xl sm:text-6xl font-extrabold">{movie.title}</h1>
       <p className="max-w-lg text-sm sm:text-base text-zinc-300 line-clamp-3">

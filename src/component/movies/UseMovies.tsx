@@ -13,14 +13,14 @@ export const UseMovies = () => {
     fetcher,
     {
       revalidateOnFocus: false,
-      refreshInterval: 60000, // revalidate every 60s
+      refreshInterval: 60000, 
     }
   );
 
   return {
     movies: data ?? [],
     isLoading,
-    error, // <-- fix here
+    error, 
     mutate,
   };
 };

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
 import { FaHeart } from "react-icons/fa6";
+import { fetchMovies, moviefavorite } from "../api-call/api";
 
 interface Movie {
   id: number;
@@ -44,8 +45,34 @@ const FavoritePage = () => {
     router.push(`/movieDetail/${id}`);
   };
 
-  const removefav = () => {
-    //TODO Post
+  const handleRemove = async (movieId: number | null) => {
+    if (!movieId) return;
+
+    const confirmed = confirm(
+      "Are you sure you want to remove this movie from your favorites?"
+    );
+    if (!confirmed) return;
+
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.delete(
+        `http://192.168.1.212:8000/api/remove-favorite/${movieId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // ✅ Update UI instantly without reloading
+      setFavorites((prevFavorites) =>
+        prevFavorites.filter((fav) => fav.movie.id !== movieId)
+      );
+    } catch (error) {
+      console.error("Error removing favorite:", error);
+      alert("Could not remove the movie from favorites.");
+    }
   };
 
   if (favorites.length === 0) {
@@ -82,27 +109,16 @@ const FavoritePage = () => {
               <div className="absolute top-0 right-0 p-2">
                 <button
                   type="button"
-                  onClick={async (e) => {
-                    e.stopPropagation();
-                    try {
-                      const token = localStorage.getItem("token");
-                      await axios.delete(
-                        `http://192.168.1.212:8000/api/remove-favorite/${movie.id}`,
-                        {
-                          headers: {
-                            Authorization: `Bearer ${token}`,
-                          },
-                        }
-                      );
-                    } catch (error) {
-                      console.error("Error adding favorite:", error);
-                    }
+                  onClick={(e) => {
+                    handleRemove(movie.id);
                   }}
                   className="bg-transparent border-none p-0 m-0"
                 >
                   <FaHeart
                     className="h-10 w-10 text-red-500 hover:text-white"
-                    onClick={removefav}
+                    // onClick={(e) => {
+                    //   handleRemove(movie.id);
+                    // }}
                   />
                 </button>
               </div>
