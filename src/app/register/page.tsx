@@ -35,8 +35,8 @@ export default function Register() {
       );
       console.log("API response:", res.data);
       alert("Registration successful!");
-      setError(""); // Clear error if successful
-      // Optional: Navigate to login or show success
+      setError(""); 
+      
       router.push('/login')
     } catch (err: any) {
       console.error("API error:", err);

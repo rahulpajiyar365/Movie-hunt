@@ -60,8 +60,8 @@ export default function EditProfilePage({
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            id: user.id, // include id for backend update
-            name: formData.username, // or username if backend expects it
+            id: user.id, 
+            name: formData.username, 
             email: formData.email,
             age: Number(formData.age),
             ...(formData.password ? { password: formData.password } : {}),
@@ -73,7 +73,7 @@ export default function EditProfilePage({
         console.error("Backend error:", errorText);
         throw new Error("Update failed");
       }
-      onClose(); // Close modal and refresh profile
+      onClose(); 
     } catch (error) {
       console.error("Error updating profile:", error);
     }
@@ -88,7 +88,7 @@ export default function EditProfilePage({
           className="bg-white shadow-sm rounded-2xl p-8"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Username */}
+         
             <div className="col-span-1">
               <label
                 htmlFor="username"

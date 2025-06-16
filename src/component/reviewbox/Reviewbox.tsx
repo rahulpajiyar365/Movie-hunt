@@ -5,7 +5,7 @@ import axios from "axios";
 import { useParams } from "next/navigation";
 
 export default function ReviewBox() {
-  const params = useParams(); // 🆕 un wrap it using React.use()
+  const params = useParams(); 
   const [rating, setRating] = useState<number | null>(null);
   const [review, setReview] = useState<string>("");
   const id = Number(params.id);

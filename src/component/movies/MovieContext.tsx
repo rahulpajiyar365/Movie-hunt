@@ -2,7 +2,7 @@
 
 import { createContext, useState, useContext, useEffect } from 'react';
 
-// Define a Movie type
+
 interface Movie {
   id: string | number;
   [key: string]: any;
