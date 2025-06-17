@@ -3,21 +3,11 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import axios from "axios";
 import { FaHeart } from "react-icons/fa6";
-import { fetchMovies, moviefavorite } from "../api-call/api";
+import { Favorite } from "@/components/movies/Movie";
 
-interface Movie {
-  id: number;
-  title: string;
-  thumbnail_url: string;
-  release_date: string;
-}
-
-interface Favorite {
-  movie: Movie;
-}
+const base_url = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const FavoritePage = () => {
   const [favorites, setFavorites] = useState<Favorite[]>([]);
@@ -27,12 +17,9 @@ const FavoritePage = () => {
     const fetchFavorites = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `http://192.168.1.212:8000/api/view-favorite`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await axios.get(`${base_url}/view-favorite`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setFavorites(response.data.data || []);
       } catch (error) {
         console.error("Error fetching favorites:", error);
@@ -56,16 +43,12 @@ const FavoritePage = () => {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.delete(
-        `http://192.168.1.212:8000/api/remove-favorite/${movieId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.delete(`${base_url}/remove-favorite/${movieId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      // ✅ Update UI instantly without reloading
       setFavorites((prevFavorites) =>
         prevFavorites.filter((fav) => fav.movie.id !== movieId)
       );
@@ -109,7 +92,7 @@ const FavoritePage = () => {
               <div className="absolute top-0 right-0 p-2">
                 <button
                   type="button"
-                  onClick={(e) => {
+                  onClick={() => {
                     handleRemove(movie.id);
                   }}
                   className="bg-transparent border-none p-0 m-0"

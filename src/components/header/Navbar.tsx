@@ -1,9 +1,11 @@
 "use client";
-
 import axios from "axios";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
+const base_url = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -19,11 +21,8 @@ const NavBar = () => {
 
     window.addEventListener("storage", checkAuth);
 
-    const interval = setInterval(checkAuth, 1000);
-
     return () => {
       window.removeEventListener("storage", checkAuth);
-      clearInterval(interval);
     };
   }, []);
 
@@ -33,7 +32,7 @@ const NavBar = () => {
 
     try {
       await axios.post(
-        "http://192.168.1.212:8000/api/logout",
+        `${base_url}/logout`,
         {},
         {
           withCredentials: true,
@@ -47,6 +46,7 @@ const NavBar = () => {
     }
 
     localStorage.removeItem("token");
+    window.dispatchEvent(new Event("storage"));
     setIsLoggedIn(false);
     router.replace("/");
   };
@@ -57,10 +57,12 @@ const NavBar = () => {
         <Link href="/">
           <div className="w-28 h-12 overflow-hidden flex items-center justify-center">
             <span className="sr-only">Movie hunt</span>
-            <img
+            <Image
               src="/images/logo.png"
               alt="Movie hunt Logo"
               className="w-15 h-auto align-baseline"
+              width={60}
+              height={60}
             />
           </div>
         </Link>

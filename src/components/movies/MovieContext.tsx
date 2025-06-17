@@ -5,7 +5,7 @@ import { createContext, useState, useContext, useEffect } from 'react';
 
 interface Movie {
   id: string | number;
-  [key: string]: any;
+  key: string;
 }
 
 interface MovieContextType {

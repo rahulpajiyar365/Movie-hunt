@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+const base_url =process.env.NEXT_PUBLIC_API_BASE_URL
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -30,7 +31,7 @@ export default function Register() {
     try {
       console.log("Form submitted:", formData);
       const res = await axios.post(
-        "http://192.168.1.212:8000/api/register",
+        `${base_url}/register`,
         formData
       );
       console.log("API response:", res.data);
@@ -38,10 +39,9 @@ export default function Register() {
       setError(""); 
       
       router.push('/login')
-    } catch (err: any) {
-      console.error("API error:", err);
+    } catch {
       setError(
-        err.response?.data?.message || "Registration failed. Please try again."
+        "Registration failed. Please try again."
       );
     }
   };

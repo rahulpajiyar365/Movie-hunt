@@ -1,9 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import EditProfilePage from "@/component/userProfile/Edit-Profile";
-import PopMessage from "@/component/pop-message/PopMessage";
-import { fetchUserProfile, handleDelete } from "../api/api-call/api2";
+import { useRouter } from "next/navigation";
+
+import EditProfilePage from "@/components/userProfile/Edit-Profile";
+import PopMessage from "@/components/pop-message/PopMessage";
+import { fetchUserProfile, handleDelete } from "../../api/api-call/api2";
 
 interface User {
   id: number;
@@ -18,6 +20,7 @@ export default function ProfilePage() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const getUser = async () => {
@@ -56,7 +59,7 @@ export default function ProfilePage() {
             {user.name}
           </h2>
           <p className="text-gray-600 dark:text-gray-300">{user.email}</p>
-          <p className="text-gray-600 dark:text-gray-300 ">Age: {user.age}</p>
+          <p className="text-gray-600 dark:text-gray-300">Age: {user.age}</p>
 
           <div className="mt-6 flex justify-center gap-4">
             <button
@@ -78,15 +81,20 @@ export default function ProfilePage() {
                 onCancel={() => setShowConfirm(false)}
                 onConfirm={async (password) => {
                   setShowConfirm(false);
-                  if (user) {
-                    await handleDelete(user.id);
+                  const result = await handleDelete(password, router);
+                  if (result.success) {
+                    alert("Account deleted");
+                    localStorage.removeItem("token");
+                    window.dispatchEvent(new Event("storage")); // Force NavBar to update
+                    router.push("/login");
+                  } else {
+                    alert(result.error);
                   }
                 }}
               />
             )}
           </div>
         </div>
-        
       </div>
 
       {editOpen && user && (
@@ -122,7 +130,6 @@ export default function ProfilePage() {
               }}
             />
           </div>
-          
         </div>
       )}
     </>

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 
 const Footer = () => {
@@ -9,7 +10,7 @@ const Footer = () => {
     <footer className="bg-black border-t border-red-500 text-gray-400 px-6 py-10 text-sm">
       <div className="max-w-screen-xl mx-auto grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-6">
         <div className="col-span-2 md:col-span-1">
-          <img src="/images/logo.png" alt="Movie Hunt" className="w-15 h-auto"/>
+          <Image src="/images/logo.png" alt="Movie Hunt" className="w-15 h-auto" width={60} height={60}/>
           <h3 className="text-white font-semibold mb-4">Movie Hunt</h3>
           <p className="text-xs">
             Watch your favorite movies and shows — all in one place.

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useParams } from "next/navigation";
-
+const base_url =process.env.NEXT_PUBLIC_API_BASE_URL
 export default function ReviewBox() {
   const params = useParams(); 
   const [rating, setRating] = useState<number | null>(null);
@@ -21,7 +21,7 @@ export default function ReviewBox() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `http://192.168.1.212:8000/api/add-user-rating/${id}`,
+        `${base_url}/${id}`,
         {
           rating,
           review,

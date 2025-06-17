@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Image from "next/image";
+
+const base_url = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 type Genre = {
   id: number;
@@ -16,10 +17,13 @@ type Movie = {
   genres: Genre[];
 };
 
-const SearchButton: React.FC = () => {
+type SearchButtonProps = {
+  onSearchResults: (results: Movie[] | null) => void;
+};
+
+const SearchButton: React.FC<SearchButtonProps> = ({ onSearchResults }) => {
   const [query, setQuery] = useState("");
   const [genre, setGenre] = useState<number | "">("");
-  const [results, setResults] = useState<Movie[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -27,9 +31,7 @@ const SearchButton: React.FC = () => {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        const response = await axios.get(
-          "http://192.168.1.212:8000/api/movies-genre"
-        );
+        const response = await axios.get(`${base_url}/movies-genre`);
         const genreList = Array.isArray(response.data.data)
           ? response.data.data
           : [];
@@ -54,19 +56,17 @@ const SearchButton: React.FC = () => {
         payload.gen = [genre];
       }
 
-      const response = await axios.post(
-        "http://192.168.1.212:8000/api/search-movies",
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post(`${base_url}/search-movies`, payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-      setResults(response.data.data || []);
-    } catch (err) {
+      const searchData = response.data.data || [];
+      onSearchResults(searchData); // send to parent
+    } catch {
       setError("No result found");
+      onSearchResults([]); // empty list on error
     } finally {
       setLoading(false);
     }
@@ -111,34 +111,7 @@ const SearchButton: React.FC = () => {
       </form>
 
       {loading && <p className="text-sm text-gray-500">Loading...</p>}
-      {error && <p className="text-sm text-gray-500">{error}</p>}
-
-      {results.length > 0 && (
-        <ul className="space-y-3 grid grid-cols-3 gap-6 p-2 mt-2">
-          {results.map((movie) => (
-            <li
-              key={movie.id}
-              className="border border-gray-200 rounded-md p-3 hover:bg-gray-50 transition "
-            >
-              <p className="text-base font-semibold">{movie.title}</p>
-              <Image
-                src={movie.thumbnail_url}
-                alt={movie.title || "poster"}
-                width={500}
-                height={750}
-                className="rounded-lg w-full h-full object-cover group-hover:opacity-80 transition-opacity duration-300"
-              />
-              <p className="text-sm text-gray-500">
-                Genre: {movie.genres.map((g) => g.name).join(", ")}
-              </p>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {!loading && !error && results.length === 0 && (
-        <p className="text-sm text-gray-400">No results found.</p>
-      )}
+      {error && <p className="text-sm text-red-500">{error}</p>}
     </div>
   );
 };

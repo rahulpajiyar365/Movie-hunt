@@ -1,21 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { fetchMovies } from "@/app/api/api-call/api";
+// import { fetchMovies } from "@/api/api-call/api";
 import { FaHeart } from "react-icons/fa6";
+import { MovieProps } from "./Movie";
 
-
-interface MovieProps {
-  id: number;
-  title: string;
-  release_date: string;
-  description: string | undefined;
-  thumbnail_url: string;
-  handleClick: any;
-}
+const base_url = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const MovieCard = ({
   id,
@@ -24,34 +17,30 @@ const MovieCard = ({
 
   thumbnail_url,
 }: MovieProps) => {
-  const [movies, setMovies] = useState<MovieProps[]>([]);
+  // const [movies, setMovies] = useState<MovieProps[]>([]);
   const router = useRouter();
-  const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-
-  useEffect(() => {
+/*   useEffect(() => {
     const getMovies = async () => {
       const data = await fetchMovies();
-      setMovies(data);
+      // setMovies(data);
     };
 
     getMovies();
-  }, []);
+  }, []); */
 
   const handleImageClick = (id: number) => {
-    router.push(`/api/movieDetail/${id}`);
+    router.push(`/movieDetail/${id}`);
   };
   const handlefav = () => {
     //TODO Post
   };
   return (
-   
     <div className="bg-white p-4 rounded-lg shadow">
       <div key={id} className="group cursor-pointer max-w-sm w-full">
-      
-        <div className=" relative h-[450px] w-full">
+        <div className=" relative h-[450px] w-[300px]">
           <Image
-            src={thumbnail_url}
+            src={thumbnail_url || "/images/poster.png"}
             alt={title || "poster"}
             width={500}
             height={750}
@@ -66,14 +55,13 @@ const MovieCard = ({
                 try {
                   const token = localStorage.getItem("token");
                   await axios.post(
-                    `http://192.168.1.212:8000/api/add-favorite/${id}`,
+                    `${base_url}/add-favorite/${id}`,
                     {},
                     {
                       headers: {
                         Authorization: `Bearer ${token}`,
                       },
                     }
-               
                   );
                 } catch (error) {
                   console.error("Error adding favorite:", error);

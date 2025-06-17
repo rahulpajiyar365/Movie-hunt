@@ -96,7 +96,7 @@ export default function Login() {
           </button>
 
           <p className="mt-8 text-center text-sm text-gray-400">
-            Don't have an account?
+            Do not have an account?
             <a
               href="/register"
               className="font-medium text-pink-400 hover:text-pink-300 transition-colors duration-300"

@@ -3,40 +3,19 @@ import { useEffect, useState } from "react";
 
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { fetchMovieById } from "../../api-call/api";
-import ReviewBox from "@/component/reviewbox/Reviewbox";
+import { fetchMovieById } from "../../../api/api-call/api";
+import ReviewBox from "@/components/reviewbox/Reviewbox";
+import { Movie1 } from "@/components/movies/Movie";
 
-
-interface Genre {
-  id: number;
-  name: string;
-}
-
-interface Movie {
-  id: number;
-  title: string;
-  description: string;
-  release_date: string;
-  duration: number;
-  rating: string;
-  language: string;
-  thumbnail_url: string | any;
-  trailer_url: string;
-  video_url: string;
-  genres: Genre[];
-}
-
-interface PageProps {
+/* interface PageProps {
   params: { id: string };
-}
+} */
 
 export default function Page() {
-  const params = useParams(); // 🆕 un wrap it using React.use()
+  const params = useParams();
   const id = Number(params.id);
-  const [movie, setMovie] = useState<Movie | null>(null);
-  const [movieRating, setMovieRating] = useState(0);
-
-
+  const [movie, setMovie] = useState<Movie1 | null>(null);
+  // const [movieRating, setMovieRating] = useState(0);
 
   useEffect(() => {
     if (id) {
@@ -84,7 +63,7 @@ export default function Page() {
                 <p>
                   <span className="font-semibold">Rating:</span> {movie.rating}
                 </p>
-         
+
                 <p>
                   <span className="font-semibold">Language:</span>{" "}
                   {movie.language}
@@ -106,9 +85,9 @@ export default function Page() {
                   ))}
                 </div>
               </div>
-            <div>
-              <ReviewBox />
-            </div>
+              <div>
+                <ReviewBox />
+              </div>
             </div>
           </div>
         </div>
