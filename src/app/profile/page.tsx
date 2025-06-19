@@ -22,6 +22,18 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
+  /*   useEffect(() => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    router.push("/login");
+  }
+}, []);
+
+useEffect(() => {
+  if (!loading && !user) {
+    router.push("/login");
+  }
+}, [loading, user]); */
   useEffect(() => {
     const getUser = async () => {
       setLoading(true);
@@ -48,11 +60,11 @@ export default function ProfilePage() {
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-6">
         <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl max-w-md w-full p-6 text-center">
           <Image
-            src={user.image_url || "/default-avatar.png"}
+            src={user.image_url || "/images/poster.png"}
             alt={user.name}
             width={120}
             height={120}
-            className="rounded-full border-4 border-blue-600 object-cover mx-auto"
+            className="rounded-full border-4 border-blue-600 object-cover mx-auto h-40 w-40"
           />
 
           <h2 className="mt-4 text-2xl font-bold text-gray-800 dark:text-white">
@@ -85,7 +97,7 @@ export default function ProfilePage() {
                   if (result.success) {
                     alert("Account deleted");
                     localStorage.removeItem("token");
-                    window.dispatchEvent(new Event("storage")); // Force NavBar to update
+                    window.dispatchEvent(new Event("storage")); 
                     router.push("/login");
                   } else {
                     alert(result.error);

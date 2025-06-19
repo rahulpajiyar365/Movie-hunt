@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { FaHeart } from "react-icons/fa6";
 import { Favorite } from "@/components/movies/Movie";
+import { profile } from "console";
 
 const base_url = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -57,6 +58,11 @@ const FavoritePage = () => {
       alert("Could not remove the movie from favorites.");
     }
   };
+
+
+
+ /*  if (!profile)
+    return <p className="text-center py-10 text-red-600">User not found.</p>; */
 
   if (favorites.length === 0) {
     return (

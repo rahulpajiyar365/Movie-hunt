@@ -14,6 +14,10 @@ export const fetchUserProfile = async (): Promise<User | null> => {
     });
     return data.data;
   } catch (err) {
+/*     if (err.response?.status === 400){
+      localStorage.removeItem("token");
+      window.dispatchEvent(new Event ("storage"))
+    } */
     console.error("Failed to fetch profile:", err);
     return null;
   }
