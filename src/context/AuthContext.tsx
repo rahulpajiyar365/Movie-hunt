@@ -35,8 +35,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } else {
         throw new Error("Unauthorized");
       }
-    } catch (err) {
-      console.warn("Invalid or expired token.");
+    } catch ( err ) {
+      console.warn("Invalid or expired token.", err);
       localStorage.removeItem("token");
       setIsLoggedIn(false);
     }

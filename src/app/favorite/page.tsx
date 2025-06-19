@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { FaHeart } from "react-icons/fa6";
 import { Favorite } from "@/components/movies/Movie";
-import { profile } from "console";
+
 
 const base_url = process.env.NEXT_PUBLIC_API_BASE_URL;
 
