@@ -23,7 +23,7 @@ type SearchButtonProps = {
 
 const SearchButton: React.FC<SearchButtonProps> = ({ onSearchResults }) => {
   const [query, setQuery] = useState("");
-  const [genre, setGenre] = useState<number | "">("");
+  const [genre, setGenre] = useState<number | null>(null);
   const [genres, setGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -52,21 +52,21 @@ const SearchButton: React.FC<SearchButtonProps> = ({ onSearchResults }) => {
 
     try {
       const payload: { name: string; gen?: number[] } = { name: query };
-      if (genre !== "") {
+      if (genre !== null) {
         payload.gen = [genre];
       }
 
-      const response = await axios.post(`${base_url}/search-movies`, payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        `${base_url}/search-movies`,
+        payload
+      );
 
       const searchData = response.data.data || [];
-      onSearchResults(searchData); // send to parent
-    } catch {
+      onSearchResults(searchData);
+    } catch(err) {
+      console.log("search failed",err)
       setError("No result found");
-      onSearchResults([]); // empty list on error
+      onSearchResults([]);
     } finally {
       setLoading(false);
     }
@@ -95,9 +95,9 @@ const SearchButton: React.FC<SearchButtonProps> = ({ onSearchResults }) => {
         </div>
 
         <select
-          value={genre}
+          value={genre ??""}
           onChange={(e) =>
-            setGenre(e.target.value ? Number(e.target.value) : "")
+            setGenre(e.target.value ? Number(e.target.value) : null)
           }
           className="w-full md:w-40 h-10 border-2 border-sky-500 text-sky-600 rounded-md px-2 text-sm focus:outline-none focus:border-sky-600"
         >

@@ -1,5 +1,4 @@
 "use client";
-
 interface PaginationProps {
   currentPage: number;
   lastPage: number;

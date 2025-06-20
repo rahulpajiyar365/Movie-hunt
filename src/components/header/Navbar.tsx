@@ -165,7 +165,7 @@ const base_url = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const NavBar = () => {
   const router = useRouter();
-  const { isLoggedIn, setIsLoggedIn, checkAuth } = useAuth();
+  const { isLoggedIn, setIsLoggedIn} = useAuth();
 
   const handleLogout = async () => {
     const confirmLogout = window.confirm("Are you sure you want to logout?");

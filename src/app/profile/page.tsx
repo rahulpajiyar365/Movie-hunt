@@ -57,8 +57,8 @@ useEffect(() => {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-6">
-        <div className="bg-white dark:bg-gray-800 shadow-xl rounded-xl max-w-md w-full p-6 text-center">
+      <div className="bg-slate-500 dark:bg-gray-900 flex items-center justify-center p-20">
+        <div className=" bg-gray-200 shadow-xl rounded-xl max-w-md w-full p-6 text-center">
           <Image
             src={user.image_url || "/images/poster.png"}
             alt={user.name}

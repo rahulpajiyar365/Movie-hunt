@@ -7,7 +7,6 @@ interface User {
   age: number;
   password?: string;
 }
-
 interface EditProfilePageProps {
   user: {
     id: number;
@@ -18,7 +17,7 @@ interface EditProfilePageProps {
   };
   onClose: () => void;
 }
-
+const base_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 export default function EditProfilePage({
   user,
   onClose,
@@ -27,7 +26,7 @@ export default function EditProfilePage({
     username: "",
     email: "",
     age: 0,
-    password: "",
+    // password: "",
   });
 
   useEffect(() => {
@@ -35,7 +34,7 @@ export default function EditProfilePage({
       username: user.name,
       email: user.email,
       age: user.age,
-      password: "",
+      // password: "",
     });
   }, [user]);
 
@@ -51,45 +50,41 @@ export default function EditProfilePage({
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        `http://192.168.1.212:8000/api/profile-edit`,
-        {
-          method: "Post",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            id: user.id, 
-            name: formData.username, 
-            email: formData.email,
-            age: Number(formData.age),
-            ...(formData.password ? { password: formData.password } : {}),
-          }),
-        }
-      );
+      const response = await fetch(`${base_URL}/profile-edit`, {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          id: user.id,
+          name: formData.username,
+          email: formData.email,
+          age: Number(formData.age),
+          // ...(formData.password ? { password: formData.password } : {}),
+        }),
+      });
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Backend error:", errorText);
         throw new Error("Update failed");
       }
-      onClose(); 
+      onClose();
     } catch (error) {
       console.error("Error updating profile:", error);
     }
   };
 
   return (
-    <div className=" bg-gray-50 py-8 flex items-center justify-center">
+    <div className=" bg-slate-200 py-8 flex items-center justify-center">
       <div className="max-w-2xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Edit Profile</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">Edit Profile</h1>
         <form
           onSubmit={handleSubmit}
-          className="bg-white shadow-sm rounded-2xl p-8"
+          className="bg-white shadow-sm rounded-2xl p-6"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-         
-            <div className="col-span-1">
+          <div className="gap-6 flex flex-col items-center justify-center">
+            <div className="w-full">
               <label
                 htmlFor="username"
                 className="block text-sm font-medium text-gray-700"
@@ -102,12 +97,12 @@ export default function EditProfilePage({
                 id="username"
                 value={formData.username ?? ""}
                 onChange={handleChange}
-                className="p-4  mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                className="p-2  mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 required
               />
             </div>
 
-            <div className="col-span-1">
+            <div className="w-full">
               <label
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700"
@@ -120,12 +115,12 @@ export default function EditProfilePage({
                 id="email"
                 value={formData.email ?? ""}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                className=" p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 required
               />
             </div>
 
-            <div className="col-span-1">
+            <div className="w-full">
               <label
                 htmlFor="age"
                 className="block text-sm font-medium text-gray-700"
@@ -140,12 +135,12 @@ export default function EditProfilePage({
                 onChange={handleChange}
                 min="18"
                 max="100"
-                className="mt-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 required
               />
             </div>
 
-            <div className="col-span-1">
+            {/*   <div className="">
               <label
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
@@ -161,12 +156,12 @@ export default function EditProfilePage({
                 placeholder="Leave blank to keep current password"
                 className="mt-3 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
-            </div>
+            </div> */}
           </div>
           <div className="mt-8 flex justify-end gap-4">
             <button
               type="button"
-              className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+              className="inline-flex items-center rounded-md border border-gray-300 bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-50"
               onClick={onClose}
             >
               Cancel

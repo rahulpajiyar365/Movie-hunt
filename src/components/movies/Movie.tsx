@@ -27,12 +27,7 @@ interface Genre {
   video_url: string;
   genres: Genre[];
 }
-/*  interface Movie {
-  id: number;
-  title: string;
-  thumbnail_url: string;
-  release_date: string;
-} */
+
 
  export interface User {
   id: number;

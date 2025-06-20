@@ -16,22 +16,24 @@ export default function HomePage() {
   const [searchResults, setSearchResults] = useState<Movie[] | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [lastPage, setLastPage] = useState<number>(1);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
     if (searchResults !== null) return;
+    // const controller = new AbortController()
     const getMovies = async (page: number) => {
+      setLoading(true);
+      setError(null);
       try {
         const res = await fetch(`${base_url}/movies?page=${page}`);
         const data = await res.json();
         setMovies(data.data.data || []);
         setLastPage(data.data.last_page);
-      } catch {
-        // setError("Failed");
+      } catch (err) {
+        console.log(err);
+        setError("Failed to load movies.Please try again");
       } finally {
         setLoading(false);
       }
@@ -47,13 +49,13 @@ export default function HomePage() {
   };
 
   return (
-    <main className="text-black border-2 bg-slate-400 min-h-screen">
+    <main className="text-black  bg-slate-400 min-h-screen border-2 px-4 py-6">
       {loading ? (
         <Skeleton />
       ) : error ? (
-        <p>{error}</p>
+        <p className="text-center text-red-600 mt-6">{error}</p>
       ) : (
-        <div>
+        <>
           <div className="mt-4">
             <SearchButton
               onSearchResults={(results: Movie[] | null) =>
@@ -63,15 +65,15 @@ export default function HomePage() {
           </div>
 
           <div className="w-full my-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 space-y-8 place-items-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 place-items-center">
               {(searchResults ?? movies).map((movie) => (
                 <MovieCard
                   key={movie.id}
+                  id={movie.id}
                   title={movie.title}
                   release_date={movie.release_date ?? ""}
                   description={movie.description}
                   thumbnail_url={movie.thumbnail_url}
-                  id={movie.id}
                   handleClick={handleSinglemovie}
                 />
               ))}
@@ -79,7 +81,7 @@ export default function HomePage() {
           </div>
 
           {searchResults === null && (
-            <div>
+            <div className="mt-8">
               <Pagination
                 currentPage={currentPage}
                 lastPage={lastPage}
@@ -87,7 +89,7 @@ export default function HomePage() {
               />
             </div>
           )}
-        </div>
+        </>
       )}
     </main>
   );

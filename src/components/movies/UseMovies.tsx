@@ -1,5 +1,5 @@
 import useSWR from "swr";
-
+const base_URL=process.env.NEXT_PUBLIC_API_BASE_URL
 const fetcher = async (url: string) =>
   fetch(url, {
     headers: {
@@ -9,7 +9,7 @@ const fetcher = async (url: string) =>
 
 export const UseMovies = () => {
   const { data, error, isLoading, mutate } = useSWR(
-    "http://192.168.1.212:8000/api/movies",
+    `${base_URL}/movies`,
     fetcher,
     {
       revalidateOnFocus: false,

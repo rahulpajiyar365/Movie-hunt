@@ -21,7 +21,7 @@ export default function ReviewBox() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `${base_url}/${id}`,
+        `${base_url}/add-user-rating/${id}`,
         {
           rating,
           review,

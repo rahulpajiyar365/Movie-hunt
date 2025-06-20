@@ -8,10 +8,10 @@ const base_url = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function Login() {
   const router = useRouter();
-  const { setIsLoggedIn, checkAuth } = useAuth();
-
+  const { setIsLoggedIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -36,18 +36,19 @@ export default function Login() {
       }
     } catch (err: any) {
       console.error("API error:", err);
-      // setError("Login failed. Please check your credentials.");
-      if (err.response.data.message) {
+      if (err?.response?.data?.message) {
         setError(err.response.data.message);
       } else {
         setError("Login failed. Please check your credentials.");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="bg-white dark:bg-gray-800 flex items-center justify-center w-screen h-screen p-4">
+      <div className=" bg-slate-600 flex items-center justify-center w-screen h-screen p-4">
         <div className="w-full sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl bg-black p-4 sm:p-6 md:p-8 rounded-xl shadow-2xl shadow-pink-500/10">
           <div className="text-center mb-8">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-2">
@@ -109,7 +110,7 @@ export default function Login() {
             type="submit"
             className="w-full py-3 px-4 my-4 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-medium rounded-lg shadow-lg shadow-pink-500/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 focus:ring-offset-gray-900 transition-all duration-300"
           >
-            Login
+            {loading ? "logging in..." : "login"}
           </button>
 
           <p className="mt-8 text-center text-sm text-gray-400">

@@ -4,31 +4,14 @@ import React from "react";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-// import { fetchMovies } from "@/api/api-call/api";
+
 import { FaHeart } from "react-icons/fa6";
 import { MovieProps } from "./Movie";
 
 const base_url = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-const MovieCard = ({
-  id,
-  title,
-  release_date,
-
-  thumbnail_url,
-}: MovieProps) => {
-  // const [movies, setMovies] = useState<MovieProps[]>([]);
+const MovieCard = ({ id, title, release_date, thumbnail_url }: MovieProps) => {
   const router = useRouter();
-
-/*   useEffect(() => {
-    const getMovies = async () => {
-      const data = await fetchMovies();
-      // setMovies(data);
-    };
-
-    getMovies();
-  }, []); */
-
   const handleImageClick = (id: number) => {
     router.push(`/movieDetail/${id}`);
   };

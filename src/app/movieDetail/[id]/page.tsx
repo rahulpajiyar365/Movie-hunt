@@ -7,23 +7,22 @@ import { fetchMovieById } from "../../../api/api-call/api";
 import ReviewBox from "@/components/reviewbox/Reviewbox";
 import { Movie1 } from "@/components/movies/Movie";
 
-/* interface PageProps {
-  params: { id: string };
-} */
-
 export default function Page() {
   const params = useParams();
-  const id = Number(params.id);
+  const [error, setError] = useState("");
+  const id = params?.id ? Number(params.id) : null;
   const [movie, setMovie] = useState<Movie1 | null>(null);
-  // const [movieRating, setMovieRating] = useState(0);
 
   useEffect(() => {
-    if (id) {
+    if (id && !isNaN(id)) {
       fetchMovieById(id)
         .then((data) => setMovie(data))
         .catch((error) => console.error("Error fetching movie detail:", error));
+      setError("Movie not found or failed to load.");
     }
   }, [id]);
+
+  error && error;
 
   return (
     <div className="min-h-screen bg-gray-200 dark:bg-gray-900 text-gray-800 dark:text-white px-4 py-8">
@@ -31,8 +30,9 @@ export default function Page() {
         <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
           <div className="relative w-full aspect-video bg-black">
             <iframe
-              className="absolute top-0 left-0 w-full h-full rounded-t-2xl"
-              src={movie.video_url}
+              className="relative w-full aspect-video bg-black"
+              title={movie.title}
+              src={movie.video_url || movie.thumbnail_url}
               allowFullScreen
             />
           </div>
@@ -40,7 +40,7 @@ export default function Page() {
           <div className="flex flex-col md:flex-row p-6 gap-8">
             <div className="md:w-1/3">
               <Image
-                src={movie.thumbnail_url}
+                src={movie.thumbnail_url || "/images/poster.png"}
                 alt={movie.title}
                 width={300}
                 height={200}
