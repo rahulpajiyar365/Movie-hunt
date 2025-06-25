@@ -49,7 +49,7 @@ export default function HomePage() {
   };
 
   return (
-    <main className="text-black  bg-slate-400 min-h-screen border-2 px-4 py-6">
+    <main className="text-black  bg-slate-400 min-h-screen px-4 py-6">
       {loading ? (
         <Skeleton />
       ) : error ? (

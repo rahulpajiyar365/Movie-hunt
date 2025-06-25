@@ -46,6 +46,7 @@ const MovieCard = ({ id, title, release_date, thumbnail_url }: MovieProps) => {
                       },
                     }
                   );
+                  alert("Favourite added successfuly")
                 } catch (error) {
                   console.error("Error adding favorite:", error);
                 }
